@@ -1,0 +1,12 @@
+{
+  "name": "forum",
+  "version": "1.0.0",
+  "description": "Forum eval ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server"
+  },
+  "author": "Romuald Detrait",
+  "license": "ISC"
+}

@@ -1,0 +1,36 @@
+body {
+    margin: 0!important;
+    font: normal 75% Arial, Helvetica, sans-serif!important;
+}
+.index{
+    /*overflow: hidden;*/
+}
+canvas {
+    display: block;
+    vertical-align: bottom;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #10529f;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+html, body {
+    height: 100%;
+}
+
+.card{
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    color: #fff;
+}
+
+label{
+    font-size: 0.80rem;
+}
