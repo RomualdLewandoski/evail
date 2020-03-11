@@ -14,6 +14,6 @@ loginForm.submit(function (event) {
         event.preventDefault();
         swal("Erreur", "Vous devez remplir tous les champs du formulaitre de connexion", "error")
     }else{
-
+        return;
     }
 })

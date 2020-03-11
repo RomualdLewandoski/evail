@@ -1,6 +1,6 @@
 var template = `
 <hr>
-<form id="loginForm">
+<form id="loginForm" method="get" action="forum.html">
     <div class="row form-group " style="align-items: center">
         <div class="col-md-2">
             <label for="loginPseudo">Pseudo/Email</label>
