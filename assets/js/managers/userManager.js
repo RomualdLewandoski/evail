@@ -9,7 +9,7 @@ function loadUsers(array){
     let x
     for (x in obj){
         let user = obj[x]
-        var user_obj = new Users(
+        let user_obj = new Users(
             user.pseudo,
             user.password,
             user.email,

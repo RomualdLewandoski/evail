@@ -7,20 +7,22 @@ import {
 } from "./managers/methodManager.js";
 import {
     loadUsers,
-    saveUsers,
-    isExist,
     register,
     login,
     logout
 } from "./managers/userManager.js";
 import forum from "../../vues/forum.js";
 import navbar from "../../vues/navbar.js";
+import {loadTopics} from "./managers/topicManager.js";
 
 const url = window.location.href;
-const astr = url.split("?");
 const userList = [];
+const topicList = [];
 if (localStorage.getItem("users")) {
     loadUsers(userList)
+}
+if (localStorage.getItem('topics')){
+    loadTopics(topicList)
 }
 
 if (isGetMethod(url)) {
@@ -85,15 +87,10 @@ function displayForum() {
         localStorage.removeItem("successForum");
     }
     if (sessionStorage.getItem('user')){
-        let render = navbar().view+forum().view
-        $('#app').append(render)
 
-        $('#logoutBtn').click(function () {
-            logout()
-        })
+        displayMain()
 
-        displayDate()
-        setInterval(displayDate, 1000)
+
 
     } else{
         localStorage.setItem('error', "Vous devez etre connecté pour accéder au forum")
@@ -101,3 +98,38 @@ function displayForum() {
     }
 }
 
+function displayMain() {
+    let render = navbar().view+forum(topicList).view
+    $('#app').append(render)
+
+    displayDate()
+    setInterval(displayDate, 1000)
+
+    $('#logoutBtn').click(function () {
+        logout()
+    })
+
+    $('.read').click(function (event) {
+        event.preventDefault();
+        let id = $(this).attr("data-id")
+        console.log("Lecture du topic " + id)
+        $('#app').empty()
+        displayRead(id)
+    })
+}
+
+function displayRead(id) {
+    //todo on n'oublie pas de récupérer le template de lecture de l'article
+    let render = navbar().view
+    $('#app').append(render)
+
+    displayDate()
+    setInterval(displayDate, 1000)
+
+    $('#logoutBtn').click(function () {
+        logout()
+    })
+}
+
+
+export {topicList}

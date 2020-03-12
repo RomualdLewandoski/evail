@@ -36,19 +36,6 @@ class Users {
         return `${this.ville}`;
     }
 
-    getObj(){
-        return {
-            pseudo: this.getPseudo(),
-            password: this.getPassword(),
-            email: this.getEmail(),
-            nom: this.getNom(),
-            prenom: this.getPrenom(),
-            sexe: this.getSexe(),
-            age: this.getAge(),
-            ville: this.getVille()
-        }
-    }
-
 }
 
 export {Users}

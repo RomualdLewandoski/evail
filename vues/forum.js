@@ -9,8 +9,12 @@ var template = `
                <i class="fas fa-comments"></i> Liste des Topics
             </div>
             <div class="mt-4"></div>
-            <div class="forum-list">
-                %topicList%
+            <div class="forum-list text-left">
+            <div class="btn btn-lg btn-outline-bleu ml-3 mb-4" data-toggle="modal" data-target="#newTopic">Ajouter un topic</div>
+            <div id="topicList">
+                    %topicList%
+            </div>
+            
             </div>
             <div class="mt-4"></div>
          </div>
@@ -40,7 +44,7 @@ var template = `
                      <h4>Nombre de sujets</h4>
                   </div>
                   <div class="col-sm-6" style="text-align: left">
-                     <h4>%nbTopic%</h4>
+                     <h4 id="nbtopics">%nbTopic%</h4>
                   </div>
                </div>
             </div>
@@ -49,11 +53,11 @@ var template = `
                <h3>Dernier sujet</h3>
                <br>
                <div class="col-sm-12" style="text-align: left">
-                  <h6>Titre</h6>
-                  <small>
-                  Par: pseudo
-                  le date
-                  à heure
+                  <h6 id="lastTitle">%lastTitle%</h6>
+                  <p id="lastTime">
+                  Par: %lastAuthor%
+                  le %lastDate%
+                  </p>
                </div>
                <br>
             </div>
@@ -61,37 +65,112 @@ var template = `
       </div>
    </div>
 </div>
+%modal%
+<script type="module" src="./assets/js/scripts/topics.js"></script>
 `;
 
-var topicList = `
+var topicItem = `
                <div class="row forum-item">
-                  <div class="col-md-6">
-                     <a href="forum/list/<?php echo $forum->id; ?>">
-                        <h4>NOM DU FORUM</h4>
+                  <div class="col-md-5">
+                     <a href="#" class="read" data-id="%id%">
+                        <h4>%title%</h4>
                      </a>
                   </div>
                   <div class="col-md-3" style="text-align: right"><i>NbbComments</i></div>
-                  <div class="col-md-3" style="text-align: right">
-                     derniereRéponse</h6>
-                     <small>
-                     Par: Nom
-                     le date
-                     à Heure</small>
+                  <div class="col-md-4" style="text-align: right">
+                     
+                     Par: %author%
+                     le %date%
                   </div>
                </div>
 `;
 
-export default function () {
+var topicModal = `
+<div class="modal fade" tabindex="-1" id="newTopic" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Créer un nouveau sujet</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createTopic">
+                    <div class="row form-group " style="align-items: center">
+                        <div class="col-md-2">
+                            <label for="loginPseudo">Titre</label>
+                        </div>
+                        <div class="input-group col-md-10">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-book"></i> </span>
+                            </div>
+                            <input type="text" class="form-control" id="topicTitle" name="topicTitle" placeholder="Le titre de votre sujet">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-2"><label for="topicNew">Contenu</label></div>
+                        <div class="col-md-10">
+                             <script src="./assets/vendor/ckeditorfull/ckeditor.js" type="text/javascript"></script>
+                        <textarea id="topicNew" name="topicNew" class="note-codable" style="height: 270px;"></textarea>
+                        <script>
+                            CKEDITOR.replace('topicNew', {
+                                removePlugins: 'sourcearea, about, forms, iframe, save, preview, print, templates'
+                            });
+                        </script>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <button type="reset" class="btn btn-danger" id="resetBtn"><i class="fas fa-trash"></i> Reset</button>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+
+
+export default function (topicList) {
     return {
-        view: replace()
+        view: replace(topicList)
     }
 }
 
-function replace() {
+function replace(topicList) {
     let temp = template
     let user = JSON.parse(sessionStorage.getItem('user'))
-    temp = temp.replace(/%myPseudo%/, user.user)
+    temp = temp.replace(/%myPseudo%/g, user.user)
 
-    temp = temp.replace(/%myLastLoginDate%/, timestampToReadable(user.date))
+    temp = temp.replace(/%myLastLoginDate%/g, timestampToReadable(user.date))
+    temp = temp.replace(/%topicList%/g, generateList(topicList))
+    temp = temp.replace(/%modal%/g, topicModal)
+    temp = temp.replace(/%nbTopic%/g, topicList.length)
+
+    let lastTopic = topicList[topicList.length-1];
+    temp = temp.replace(/%lastTitle%/g, lastTopic.getTitle())
+    temp = temp.replace(/%lastAuthor%/g, lastTopic.getAuthor())
+    let lastDate = JSON.parse(localStorage.getItem('topics')).topics[topicList.length-1].createdDate
+    temp = temp.replace(/%lastDate%/g, timestampToReadable(lastDate))
     return temp
+}
+
+function generateList(topicList) {
+    let final="";
+    let x;
+    for (x in topicList){
+        let topic = topicList[x]
+        let temp = topicItem
+        let date = JSON.parse(localStorage.getItem('topics')).topics[x].createdDate
+        let timestamp = timestampToReadable(date)
+        temp = temp.replace(/%id%/g, topic.getId())
+        temp = temp.replace(/%title%/g, topic.getTitle())
+        temp = temp.replace(/%author%/g, topic.getAuthor())
+        temp = temp.replace(/%date%/g, timestamp)
+        final += temp
+    }
+    return final
 }
