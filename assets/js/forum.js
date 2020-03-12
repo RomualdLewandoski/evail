@@ -14,6 +14,7 @@ import {
 import forum from "../../vues/forum.js";
 import navbar from "../../vues/navbar.js";
 import {loadTopics} from "./managers/topicManager.js";
+import read from "../../vues/read.js";
 
 const url = window.location.href;
 const userList = [];
@@ -109,18 +110,12 @@ function displayMain() {
         logout()
     })
 
-    $('.read').click(function (event) {
-        event.preventDefault();
-        let id = $(this).attr("data-id")
-        console.log("Lecture du topic " + id)
-        $('#app').empty()
-        displayRead(id)
-    })
+
 }
 
 function displayRead(id) {
     //todo on n'oublie pas de récupérer le template de lecture de l'article
-    let render = navbar().view
+    let render = navbar().view+read(id, topicList, userList).view
     $('#app').append(render)
 
     displayDate()
@@ -132,4 +127,5 @@ function displayRead(id) {
 }
 
 
-export {topicList}
+
+export {topicList, displayRead}

@@ -17,9 +17,19 @@ function createTopic(title, content, array) {
     saveTopics(id+1, array);
     $('#topicList').append(displayNewTopic(id, title, author, time))
     $('#nbtopics').html(array.length)
-    //todo lastTitle & lastTime
     $('#lastTitle').html(title)
     $('#lastTime').html("Par: "+author+" le "+timestampToReadable(time))
+    $('#js').empty();
+    $('#js').append(`<script type="module">
+        import {displayRead} from "./assets/js/forum.js";
+        $('.read').click(function (event) {
+        event.preventDefault();
+        let id = $(this).attr("data-id")
+        console.log("Lecture du topic " + id)
+        $('#app').empty()
+        displayRead(id)
+            })
+    </script>`);
 }
 function displayNewTopic(id, title, author, time ) {
     let template = ` <div class="row forum-item">
@@ -89,4 +99,20 @@ function getTopicById(id, array) {
     return null;
 }
 
-export {createTopic, getNextId, saveTopics, loadTopics, getTopicById}
+function getPositionInJson(id) {
+    let x;
+    let i = 0;
+    let j;
+    let obj = JSON.parse(localStorage.getItem('topics'))
+    for (x in obj.topics){
+        let topic = obj.topics[x]
+        if (topic.id == id){
+            j = i;
+        } else{
+            i++
+        }
+    }
+    return j
+}
+
+export {createTopic, getNextId, saveTopics, loadTopics, getTopicById, getPositionInJson}

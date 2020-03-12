@@ -130,6 +130,18 @@ var topicModal = `
             </div>
         </div>
     </div>
+    <div id="js">
+    <script type="module">
+        import {displayRead} from "./assets/js/forum.js";
+        $('.read').click(function (event) {
+        event.preventDefault();
+        let id = $(this).attr("data-id")
+        console.log("Lecture du topic " + id)
+        $('#app').empty()
+        displayRead(id)
+            })
+    </script>
+    </div>
 </div>
 `;
 
