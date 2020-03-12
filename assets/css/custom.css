@@ -5,6 +5,13 @@ body {
 .index{
     /*overflow: hidden;*/
 }
+
+@font-face {
+    font-family: kromiumBold;
+    src: url("../font/OptimusPrincepsSemiBold.ttf");
+}
+
+
 canvas {
     display: block;
     vertical-align: bottom;
@@ -34,3 +41,77 @@ html, body {
 label{
     font-size: 0.80rem;
 }
+
+.nav-link{
+    color: white!important;
+}
+
+.text-black {
+    color: #000;
+}
+
+.pageTitle {
+    color: white;
+    text-transform: uppercase;
+    font-size: 30px;
+    text-align: left;
+    font-family: kromiumBold;
+
+}
+
+.wrap4 {
+    text-align: center;
+    width: 100%;
+    min-height: 600px;
+    overflow: hidden;
+    position: relative;
+}
+
+.btn-outline-bleu {
+    color: #007bff;
+    background-color: transparent;
+    background-image: none;
+    border-color: #007bff;
+}
+
+.btn-outline-bleu:hover {
+    color: #007bff;
+}
+
+.btn-outline-bleu:focus {
+    color: #007bff;
+}
+
+.forum-list {
+    background-color: rgba(31, 45, 55, 0.7);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-decoration: none !important;
+}
+
+
+.forum-item {
+    color: white;
+    margin: 5px;
+    min-height: 10px;
+    text-decoration: none !important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /*border-bottom: solid 1px rgba(255, 255, 250, 0.3);*/
+}
+
+.forum-item a {
+    color: white;
+    text-decoration: none !important;
+}
+
+
+.forum-stats {
+    color: white;
+    padding: 10px;
+}
+
+.forum-stats h3 {
+    font-family: kromiumBold;
+}
+

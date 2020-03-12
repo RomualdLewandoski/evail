@@ -45,7 +45,7 @@ function login(pseudo, password, array){
                 date: new Date().getTime()
             }
             sessionStorage.setItem('user', JSON.stringify(session))
-            localStorage.setItem('success', "Vous etes bien connecté")
+            localStorage.setItem('successForum', "Vous etes bien connecté")
             window.location.replace("forum.html")
         }else{
             localStorage.setItem('error', "Le mot de passe ne correspond pas avec l'utilisateur")
@@ -55,6 +55,10 @@ function login(pseudo, password, array){
         localStorage.setItem('error', "Aucun utilisateur n'existe avec ce pseudo ou cette adresse email")
         window.location.replace('index.html')
     }
+}
+function logout() {
+    sessionStorage.removeItem('user')
+    window.location.replace('index.html')
 }
 
 function register(pseudo, password, passwordConf, email, nom, prenom, sexe, age, ville, array) {
@@ -88,4 +92,4 @@ function register(pseudo, password, passwordConf, email, nom, prenom, sexe, age,
         }
     }
 }
-export {saveUsers, loadUsers, isExist, register}
+export {saveUsers, loadUsers, isExist, register, login, logout}

@@ -1,6 +1,8 @@
 import home from '../../vues/home.js'
 import loginForm from '../../vues/loginForm.js'
 import registerForm from '../../vues/registerForm.js'
+import {logout} from "./managers/userManager.js";
+
 
 var displayForm = ''
 
@@ -17,23 +19,20 @@ $(document).ready(function () {
 
 
     $('#loginBtn').click(function () {
-        if (displayForm === "login") {
-            //todo ici il faut trouver un moyen de submit le formulaire
-        } else {
             displayForm = "login"
             $('#forms').empty()
             $('#forms').append(loginForm().view)
-        }
-
     })
     $('#registerBtn').click(function () {
-        if (displayForm === "register"){
-            //todo ici il faut trouver un moyen de submit le formulaire
-        }else{
             displayForm = "register"
             $('#forms').empty()
             $('#forms').append(registerForm().view)
-        }
+    })
+    $('#goForumBtn').click(function () {
+        window.location.replace('forum.html')
+    })
+    $('#logoutBtn').click(function () {
+        logout()
     })
 
     if (localStorage.getItem("error")){

@@ -5,13 +5,16 @@ import {
     getRegisterInfo,
     getLoginInfo
 } from "./managers/methodManager.js";
-import {Users} from "./objects/Users.js";
 import {
     loadUsers,
     saveUsers,
     isExist,
-    register
+    register,
+    login,
+    logout
 } from "./managers/userManager.js";
+import forum from "../../vues/forum.js";
+import navbar from "../../vues/navbar.js";
 
 const url = window.location.href;
 const astr = url.split("?");
@@ -36,26 +39,65 @@ if (isGetMethod(url)) {
             registerData.age,
             registerData.ville,
             userList)
-    }else if (action === "login"){
+    } else if (action === "login") {
         var loginData = getLoginInfo(parsed)
-        //on va check si le champs pseudo existe Si il n'existe pas on va check avec l'email
-        //si rien n'existe ont dit que l'utilisateur n'existe pas
-        //si il existe on va check le mot de passe si il est bon en va stocker en sessionStorage
-    }else{
-        //todo pour demain
+        login(loginData.pseudo, loginData.password, userList)
+    } else {
+        window.location.replace('index.html')
     }
-}else{
-    //todo ici on fait la verif du login etc
+} else {
+    displayForum()
+}
+function displayDate() {
+    let html = $('#date')
+    let date = new Date;
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let months = new Array('Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre');
+    let d = date.getDate();
+    let day = date.getDay();
+    let days = new Array('Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi');
+    let h = date.getHours();
+    if (h < 10) {
+        h = "0" + h;
+    }
+    let m = date.getMinutes();
+    if (m < 10) {
+        m = "0" + m;
+    }
+    let s = date.getSeconds();
+    if (s < 10) {
+        s = "0" + s;
+    }
+    let result = '' + days[day] + ' ' + d  + ' ' + months[month] + ' ' + year + ' ' + h + ':' + m + ':' + s;
+    html.html(result)
+
 }
 
+function displayForum() {
 
+    if (localStorage.getItem("errorForum")) {
+        swal("Erreur", localStorage.getItem("errorForum"), "error");
+        localStorage.removeItem("errorForum");
+    }
+    if (localStorage.getItem("successForum")) {
+        swal("Bravo", localStorage.getItem("successForum"), "success");
+        localStorage.removeItem("successForum");
+    }
+    if (sessionStorage.getItem('user')){
+        let render = navbar().view+forum().view
+        $('#app').append(render)
 
-if (localStorage.getItem("error")){
-    swal("Erreur", localStorage.getItem("error"), "error");
-    localStorage.removeItem("error");
-}
-if (localStorage.getItem("success")){
-    swal("Bravo", localStorage.getItem("success"), "success");
-    localStorage.removeItem("success");
+        $('#logoutBtn').click(function () {
+            logout()
+        })
+
+        displayDate()
+        setInterval(displayDate, 1000)
+
+    } else{
+        localStorage.setItem('error', "Vous devez etre connecté pour accéder au forum")
+        window.location.replace('index.html')
+    }
 }
 

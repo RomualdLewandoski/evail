@@ -12,16 +12,25 @@ const template = `<div class="container h-100">
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button class="btn btn-lg btn-outline-success mr-4" id="registerBtn">Inscription</button>
-                    <button class="btn btn-lg btn-outline-primary" id="loginBtn">Connexion</button>
+                    %btn%
+                   
                 </div>
             </div>
         </div>
     </div>
 </div>`;
 
+var btnLogin = ` <button class="btn btn-lg btn-outline-success mr-4" id="registerBtn">Inscription</button>
+                    <button class="btn btn-lg btn-outline-primary" id="loginBtn">Connexion</button>`;
+var btnLogout = ` <button class="btn btn-lg btn-outline-success mr-4" id="goForumBtn">Allez au forum</button>
+                    <button class="btn btn-lg btn-outline-primary" id="logoutBtn">Déconnexion</button>`
 export default function () {
     return{
-        view: template
+        view: replace()
     }
+}
+
+function replace() {
+    let temp = template
+    return temp.replace(/%btn%/, sessionStorage.getItem('user') ? btnLogout : btnLogin)
 }
