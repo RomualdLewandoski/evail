@@ -43,7 +43,19 @@ if (isGetMethod(url)) {
         //si il existe on va check le mot de passe si il est bon en va stocker en sessionStorage
     }else{
         //todo pour demain
-    }4
+    }
+}else{
+    //todo ici on fait la verif du login etc
+}
 
+
+
+if (localStorage.getItem("error")){
+    swal("Erreur", localStorage.getItem("error"), "error");
+    localStorage.removeItem("error");
+}
+if (localStorage.getItem("success")){
+    swal("Bravo", localStorage.getItem("success"), "success");
+    localStorage.removeItem("success");
 }
 

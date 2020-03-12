@@ -40,10 +40,13 @@ function login(pseudo, password, array){
     var user = isExist(pseudo, pseudo, array)
     if(user != null){
         if(user.getPassword() === password){
-            //todo ici ont fait absolument tout ce qu'il faut pour loguer l'utilisateur
-            //on va définir une sessionStorage avec les infos utilisateurs CAD pseudo, date de connexion, nom prénom
-            //on va ensuite rediriger sur la page forum.html afin de recharger tout le dom et
-            //de se débarasser des champs de type get
+            let session = {
+                user: user.getPseudo(),
+                date: new Date().getTime()
+            }
+            sessionStorage.setItem('user', JSON.stringify(session))
+            localStorage.setItem('success', "Vous etes bien connecté")
+            window.location.replace("forum.html")
         }else{
             localStorage.setItem('error', "Le mot de passe ne correspond pas avec l'utilisateur")
             window.location.replace('index.html')

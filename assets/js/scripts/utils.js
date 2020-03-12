@@ -1,4 +1,3 @@
-import {Users} from "../objects/Users.js";
 
 function empty(data) {
     if (typeof (data) == 'number' || typeof (data) == 'boolean') {
