@@ -36,6 +36,24 @@ function isExist(pseudo, email, array) {
     return null;
 }
 
+function login(pseudo, password, array){
+    var user = isExist(pseudo, pseudo, array)
+    if(user != null){
+        if(user.getPassword() === password){
+            //todo ici ont fait absolument tout ce qu'il faut pour loguer l'utilisateur
+            //on va définir une sessionStorage avec les infos utilisateurs CAD pseudo, date de connexion, nom prénom
+            //on va ensuite rediriger sur la page forum.html afin de recharger tout le dom et
+            //de se débarasser des champs de type get
+        }else{
+            localStorage.setItem('error', "Le mot de passe ne correspond pas avec l'utilisateur")
+            window.location.replace('index.html')
+        }
+    }else{
+        localStorage.setItem('error', "Aucun utilisateur n'existe avec ce pseudo ou cette adresse email")
+        window.location.replace('index.html')
+    }
+}
+
 function register(pseudo, password, passwordConf, email, nom, prenom, sexe, age, ville, array) {
     if (isExist(pseudo, email, array)){
         localStorage.setItem("error", "Le pseudo ou l'adresse email est déja utilisé");

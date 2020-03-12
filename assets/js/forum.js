@@ -2,7 +2,8 @@ import {
     isGetMethod,
     parseGet,
     getAction,
-    getRegisterInfo
+    getRegisterInfo,
+    getLoginInfo
 } from "./managers/methodManager.js";
 import {Users} from "./objects/Users.js";
 import {
@@ -36,7 +37,10 @@ if (isGetMethod(url)) {
             registerData.ville,
             userList)
     }else if (action === "login"){
-        //todo aprs avoir fini le register comme il faut
+        var loginData = getLoginInfo(parsed)
+        //on va check si le champs pseudo existe Si il n'existe pas on va check avec l'email
+        //si rien n'existe ont dit que l'utilisateur n'existe pas
+        //si il existe on va check le mot de passe si il est bon en va stocker en sessionStorage
     }else{
         //todo pour demain
     }4
