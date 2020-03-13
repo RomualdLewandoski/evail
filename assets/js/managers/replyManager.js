@@ -1,6 +1,6 @@
 import {Reply} from "../objects/Reply.js";
 import {isExist} from "./userManager.js";
-import {userList} from "../forum.js";
+import {userList, replyList} from "../forum.js";
 import {timestampToReadable} from "../scripts/utils.js";
 
 function createReply(idTopic, content, array) {
@@ -78,7 +78,7 @@ function saveReply(nextId, array) {
     localStorage.setItem('reply', JSON.stringify(finalArray))
 }
 
-function getPositionInJson(id) {
+function getPositionInJson2(id) {
     let x;
     let i = 0;
     let j;
@@ -101,7 +101,7 @@ function loadReply(array) {
         let reply = obj[x]
         let reply_obj = new Reply(
             reply.id,
-            reply.idTopic,
+            reply.idtopic,
             reply.content,
             reply.author,
             reply.createdDate,
@@ -111,7 +111,16 @@ function loadReply(array) {
 }
 
 function getReplyByTopicId(id) {
-    //WARNING: it ll return an array of OBJECT AND NOT AN OBJECT ALONE
+    var array = []
+    let x;
+    console.log("i'm here")
+    for(x in replyList){
+        let reply = replyList[x]
+        if(reply.getIdTopic() === id){
+            array.push(reply)
+        }
+    }
+    return array
 }
 
-export {loadReply, saveReply, getNextId, createReply, getReplyByTopicId, getPositionInJson}
+export {loadReply, saveReply, getNextId, createReply, getReplyByTopicId, getPositionInJson2}

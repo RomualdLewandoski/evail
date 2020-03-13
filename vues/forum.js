@@ -1,4 +1,6 @@
 import {timestampToReadable} from "../assets/js/scripts/utils.js";
+import {getReplyByTopicId, getPositionInJson2} from '../assets/js/managers/replyManager.js';
+
 
 var template = `
 <div class="wrap4 mt-3">
@@ -78,7 +80,7 @@ var topicItem = `
                         <h4>%title%</h4>
                      </a>
                   </div>
-                  <div class="col-md-3" style="text-align: right"><i>NbbComments</i></div>
+                  <div class="col-md-3" style="text-align: right"><i>%NbbComments% Commentaire(s)</i></div>
                   <div class="col-md-4" style="text-align: right">
                      
                      Par: %author%
@@ -192,6 +194,7 @@ function generateList(topicList) {
         temp = temp.replace(/%title%/g, topic.getTitle())
         temp = temp.replace(/%author%/g, topic.getAuthor())
         temp = temp.replace(/%date%/g, timestamp)
+        temp = temp.replace(/%NbbComments%/g, getReplyByTopicId(topic.getId()).length)
         final += temp
     }
     return final
