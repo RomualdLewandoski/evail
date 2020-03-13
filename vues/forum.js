@@ -48,7 +48,16 @@ var template = `
                   </div>
                </div>
             </div>
-            <div class="m-4"></div>
+            %lastTopicInfo%
+         </div>
+      </div>
+   </div>
+</div>
+%modal%
+<script type="module" src="./assets/js/scripts/topics.js"></script>
+`;
+var infoTopics = `
+<div class="m-4"></div>
             <div class="forum-stats">
                <h3>Dernier sujet</h3>
                <br>
@@ -61,14 +70,7 @@ var template = `
                </div>
                <br>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
-%modal%
-<script type="module" src="./assets/js/scripts/topics.js"></script>
 `;
-
 var topicItem = `
                <div class="row forum-item">
                   <div class="col-md-5">
@@ -162,11 +164,19 @@ function replace(topicList) {
     temp = temp.replace(/%modal%/g, topicModal)
     temp = temp.replace(/%nbTopic%/g, topicList.length)
 
-    let lastTopic = topicList[topicList.length-1];
-    temp = temp.replace(/%lastTitle%/g, lastTopic.getTitle())
-    temp = temp.replace(/%lastAuthor%/g, lastTopic.getAuthor())
-    let lastDate = JSON.parse(localStorage.getItem('topics')).topics[topicList.length-1].createdDate
-    temp = temp.replace(/%lastDate%/g, timestampToReadable(lastDate))
+    temp = temp.replace(/%lastTopicInfo%/g, infoTopics)
+    if (topicList.length != 0){
+        let lastTopic = topicList[topicList.length-1];
+        temp = temp.replace(/%lastTitle%/g, lastTopic.getTitle())
+        temp = temp.replace(/%lastAuthor%/g, lastTopic.getAuthor())
+        let lastDate = JSON.parse(localStorage.getItem('topics')).topics[topicList.length-1].createdDate
+        temp = temp.replace(/%lastDate%/g, timestampToReadable(lastDate))
+    } else{
+        temp = temp.replace(/%lastTitle%/g, "")
+        temp = temp.replace(/%lastAuthor%/g, "")
+        temp = temp.replace(/%lastDate%/g, "")
+    }
+
     return temp
 }
 

@@ -16,7 +16,7 @@ var template = `
       <div class="forum-topic">
          <div class="row">
             <div class="col-md-3 forum-right text-center">
-               <img src="%avatarAuthor%">
+               <img src="%avatarAuthor%" style="width: 50%">
                <div class="mt-4"></div>
                <div class="forum-autor">%author%</div>
                <div class="mt-3"></div>
@@ -31,12 +31,12 @@ var template = `
          </div>
          <div class="forum-foot">
             <div class="row">
-               <div class="col-md-3">
+               <div class="col-md-5">
                   <span class="btn" style="cursor: default!important;">
                   %topicDate%
                   </span>
                </div>
-               <div class="col-md-9 text-right">
+               <div class="col-md-7 text-right">
                   <span class="btn btn-outline-forum">
                     <a href="#reply"> <i class="fas fa-reply"></i> Répondre</a>
                   </span>
@@ -47,7 +47,9 @@ var template = `
       <div class="mt-4"></div>
       <!-- END MAIN THREAD -->
       <!-- START REPLY -->
-      %replyList%
+      <div id="replyTopicList">
+        %replyList%
+      </div>
       <!-- END REPLY -->
       <!-- START FORM -->
       <div class="text-center text-white">
@@ -73,6 +75,7 @@ var template = `
       </div>
       <!-- END FORM -->
       <div class="mt-5"></div>
+      <script type="module" src="./assets/js/scripts/read.js"></script>
    </div>
 </div>
 `;
@@ -98,12 +101,12 @@ var replyItem = `
          </div>
          <div class="forum-foot">
             <div class="row">
-               <div class="col-md-3">
+               <div class="col-md-5">
                   <span class="btn" style="cursor: default!important;">
                   07/11/18                                    à
                   12:47                                </span>
                </div>
-               <div class="col-md-9 text-right">
+               <div class="col-md-7 text-right">
                   <span class="btn btn-outline-forum">
                   <a href="/action/forum/reply/delete/225"> <i class="fas fa-trash"></i> Supprimer</a>
                   </span>
@@ -120,13 +123,13 @@ var replyItem = `
       <div class="mt-4"></div>
 `;
 
-export default function (id, topicArray, userArray) {
+export default function (id, topicArray, userArray, replyArray) {
     return{
-        view: generate(id, topicArray, userArray)
+        view: generate(id, topicArray, userArray, replyArray)
     }
 }
 
-function generate(id, topicArray, userArray) {
+function generate(id, topicArray, userArray, replyArray) {
     let topic = getTopicById(id, topicArray)
     let author = isExist(topic.getAuthor(), topic.getAuthor(), userArray)
     let temp = template
@@ -143,5 +146,16 @@ function generate(id, topicArray, userArray) {
         .replace(/%id%/g, id)
         .replace(/%avatarAuthor%/g, author.getSexe() === "h" ? "./assets/img/user-h.png" : "./assets/img/user-f.png")
         .replace(/%topicDate%/g, timestampToReadable(jsonObj.createdDate))
+    if (replyArray.length === 0){
+        temp = temp.replace(/%replyList%/g, "")
+    } else{
+        temp = temp.replace(/%replyList%/g, generateReply(id, replyArray))
+    }
+
+
     return temp
+}
+
+function generateReply(id, replyArray){
+    return "Bientot"
 }

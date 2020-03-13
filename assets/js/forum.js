@@ -15,15 +15,20 @@ import forum from "../../vues/forum.js";
 import navbar from "../../vues/navbar.js";
 import {loadTopics} from "./managers/topicManager.js";
 import read from "../../vues/read.js";
+import {loadReply} from "./managers/replyManager.js";
 
 const url = window.location.href;
 const userList = [];
 const topicList = [];
+const replyList = [];
 if (localStorage.getItem("users")) {
     loadUsers(userList)
 }
 if (localStorage.getItem('topics')){
     loadTopics(topicList)
+}
+if (localStorage.getItem('reply')){
+    loadReply(replyList)
 }
 
 if (isGetMethod(url)) {
@@ -115,7 +120,7 @@ function displayMain() {
 
 function displayRead(id) {
     //todo on n'oublie pas de récupérer le template de lecture de l'article
-    let render = navbar().view+read(id, topicList, userList).view
+    let render = navbar().view+read(id, topicList, userList, replyList).view
     $('#app').append(render)
 
     displayDate()
@@ -128,4 +133,4 @@ function displayRead(id) {
 
 
 
-export {topicList, displayRead}
+export {topicList, displayRead, replyList, userList}
